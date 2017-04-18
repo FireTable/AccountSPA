@@ -3,14 +3,13 @@
   "env": {
     "development": {
       "extraBabelPlugins": [
-        "dva-hmr",
-        "transform-runtime",
-        ["import", { "style": "css", "libraryName": "antd-mobile" }]
+        "dva-hmr"
       ]
     },
     "production": {
       "extraBabelPlugins": [
-        "transform-runtime"
+        "transform-runtime",
+        ["import", { "style": "css", "libraryName": "antd-mobile" }]
       ]
     }
   },

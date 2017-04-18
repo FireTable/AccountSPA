@@ -17,7 +17,9 @@ const app = dva({
 
 // 3. Model,model的注册
 // app.model(require('./models/example'));
-app.model(require("./models/welcome"));
+//app.model(require("./models/information"));
+
+app.model(require("./models/user"));
 
 // 4. Router
 app.router(require('./router'));

@@ -6,13 +6,17 @@ import WelcomeComponet from '../components/Welcome/Welcome';
 function Welcome() {
   return (
     <div className={styles.normal}>
-      <WelcomeComponet/>
+      <WelcomeComponet />
     </div>
   );
 }
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  const {username,password}=state.user;
+  return {
+    username,
+    password,
+  };
 }
 
-export default connect(mapStateToProps)(Welcome);
+export default connect(mapStateToProps)(WelcomeComponet);

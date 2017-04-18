@@ -1,6 +1,6 @@
 
 export default {
-  namespace: 'welcome',
+  namespace: 'information',
   state: {
     id:'id',
     title:'title',
