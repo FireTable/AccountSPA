@@ -1,22 +1,30 @@
 import React from 'react';
 import { connect } from 'dva';
 import styles from './Welcome.css';
-import WelcomeComponet from '../components/Welcome/Welcome';
+import InformationComponent from '../components/Information/Information';
+import UserComponent from '../components/User/User';
 
-function Welcome() {
+function Welcome({userData,informationData,dispatch}) {
+  //将dispatch直接放进data中,直接引入
+  userData={...userData,dispatch};
+  informationData={...informationData,dispatch};
+
   return (
     <div className={styles.normal}>
-      <WelcomeComponet />
+      <InformationComponent informationData={informationData} />
+      <UserComponent userData={userData}  />
     </div>
   );
 }
 
 function mapStateToProps(state) {
-  const {username,password}=state.user;
+  const userData=state.user;
+  const informationData=state.information;
   return {
-    username,
-    password,
+    userData:userData,
+    informationData:informationData,
   };
 }
 
-export default connect(mapStateToProps)(WelcomeComponet);
+//通过connet来下发数据
+export default connect(mapStateToProps)(Welcome);

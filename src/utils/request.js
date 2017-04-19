@@ -1,3 +1,4 @@
+// ./src/utils/request.js
 import fetch from 'dva/fetch';
 
 function parseJSON(response) {
@@ -25,6 +26,6 @@ export default function request(url, options) {
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)
-    .then(data => ({ data }))
-    .catch(err => ({ err }));
+    .then((data) => ({ data }))
+    .catch((err) => ({ err }));
 }
