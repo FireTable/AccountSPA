@@ -47,9 +47,12 @@ export default {
     //select 可以用来访问其它 model
   *query({ payload : newData }, { select, call, put }) {
      yield put({ type: 'showLoading' }); //执行reducer中的showloading();
-     const  data  = yield call(query); //call 是调用执行 query查询
+     //这里执行的就是异步,call执行函数之后返回promise,返回来的promise才会有数据出来
+     const  {data}  = yield call(() =>query("ddd")); //call 是调用执行 query查询
      //const todos = yield select(state => state.todos); //用于从 state 里获取数据。
+     console.log(data);
      if (data) {
+
        yield put({
          type: 'querySuccess',
          payload: {
