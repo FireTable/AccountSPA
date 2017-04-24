@@ -1,9 +1,9 @@
 //引入请求相关（与后台系统的交互）模块
-import { query } from '../services/user';
+import { query } from '../services/users';
 
 
 export default {
-  namespace: 'user',
+  namespace: 'users',
   state: {
     id:'id',
     username:'username',
@@ -14,6 +14,11 @@ export default {
     location:'location',
     age:'age',
     sex:'sex',
+    role_id:"role_id",
+    alipay:"alipay",
+    alipay_tips:"",
+    wechat:"wechat",
+    wechat_tips:"",
     addtime:'addtime',
     loading: false, // 控制加载状态
     // modalVisible: false, // 弹出窗的显示状态

@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './User.css';
+import styles from './Users.css';
 
 import { ActivityIndicator,Tag,Icon,Flex, WhiteSpace, WingBlank,Button,InputItem} from 'antd-mobile';
 
-function User({userData}) {
+function Users({userData}) {
 
   const PlaceHolder = props => (
     <div style={{
@@ -21,7 +21,7 @@ function User({userData}) {
   function login() {
     const newData = userData;
     userData.dispatch({
-      type: 'user/query',
+      type: 'users/query',
       payload:newData,
    });
   }
@@ -71,4 +71,4 @@ function User({userData}) {
   );
 }
 
-export default User;
+export default Users;

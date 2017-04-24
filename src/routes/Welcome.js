@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import styles from './Welcome.css';
 import InformationComponent from '../components/Information/Information';
-import UserComponent from '../components/User/User';
+import UserComponent from '../components/Users/Users';
 
 function Welcome({userData,informationData,dispatch}) {
   //将dispatch直接放进data中,直接引入
@@ -18,7 +18,7 @@ function Welcome({userData,informationData,dispatch}) {
 }
 
 function mapStateToProps(state) {
-  const userData=state.user;
+  const userData=state.users;
   const informationData=state.information;
   return {
     userData:userData,

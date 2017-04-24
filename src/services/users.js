@@ -7,11 +7,16 @@ export async function query(params) {
   // 在jquery中，传入对象框架会自动封装成formData的形式，fetch没有这个功能。
   // 既然fetch不会自动转FormData，那我们自己new一个FormData，直接传给body,否则无法提交数据给php。
   let formData = new FormData();
-  formData.append("type","test");
+  formData.append("username","1111111111111");
+  formData.append("password","1111111111111");
+  formData.append("age","1111111111111");
 
-  const data =request('http://localhost/AccountSPA_php/user.php',
-  {method: 'POST',
-  headers: {},
-  body:formData});
-  return data;
+  const data =request('http://localhost/accountspa_php/public/index.php/api/user',
+  {
+    method: 'POST', //必须添加POST/GET请求,否则发送的会是OPTIONS请求,PHP无法获得数据,FETCH的特性
+    headers: {},
+    body:formData
+  });
+  // return data;
+  return true;
 }
