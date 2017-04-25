@@ -21,7 +21,16 @@ function Users({userData}) {
   function login() {
     const newData = userData;
     userData.dispatch({
-      type: 'users/query',
+      type: 'users/login',
+      payload:newData,
+   });
+  }
+
+  //注册
+  function register() {
+    const newData = userData;
+    userData.dispatch({
+      type: 'users/create',
       payload:newData,
    });
   }
@@ -61,7 +70,7 @@ function Users({userData}) {
       <Flex direction="column">
         <Button className={styles.btnStyle} size="small" type="primary"
           onClick={login}>登   录</Button>
-        <Button size="small" type="ghost">注   册</Button>
+        <Button size="small" type="ghost" onClick={register}>注   册</Button>
       </Flex>
       <PlaceHolder/>
       <WhiteSpace/>

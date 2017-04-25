@@ -23,8 +23,10 @@ function checkStatus(response) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
+
   return fetch(url, options)
     .then(checkStatus)
+    //将json对象转换为js
     .then(parseJSON)
     .then((data) => ({ data }))
     .catch((err) => ({ err }));

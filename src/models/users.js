@@ -1,25 +1,25 @@
 //引入请求相关（与后台系统的交互）模块
-import { query } from '../services/users';
+import { login,create as register } from '../services/users';
 
 
 export default {
   namespace: 'users',
   state: {
-    id:'id',
-    username:'username',
-    nickname:'nickname',
-    password:'password',
-    phone:'phone',
-    email:'email',
-    location:'location',
-    age:'age',
-    sex:'sex',
-    role_id:"role_id",
-    alipay:"alipay",
-    alipay_tips:"",
-    wechat:"wechat",
-    wechat_tips:"",
-    addtime:'addtime',
+    id:null,
+    username:null,
+    nickname:'',
+    password:'',
+    phone:'',
+    email:'',
+    location:'',
+    age:null,
+    sex:'',
+    role_id:null,
+    alipay:'',
+    alipay_tips:'',
+    wechat:'',
+    wechat_tips:'',
+    addtime:'',
     loading: false, // 控制加载状态
     // modalVisible: false, // 弹出窗的显示状态
     // modalType: 'create', // 弹出窗的类型（添加用户，编辑用户）
@@ -40,7 +40,12 @@ export default {
       };
     },
     //添加
-    createSuccess(){},
+    createSuccess(){
+      alert('注册成功');
+      return{
+        loading: false,
+      };
+    },
     //删除,管理员用的
     deleteSuccess(){},
     //更新
@@ -50,14 +55,14 @@ export default {
     //call 是调用执行一个函数
     //put  相当于 dispatch 执行一个 action
     //select 可以用来访问其它 model
-  *query({ payload : newData }, { select, call, put }) {
+  *login({ payload : newData }, { select, call, put }) {
      yield put({ type: 'showLoading' }); //执行reducer中的showloading();
-     //这里执行的就是异步,call执行函数之后返回promise,返回来的promise才会有数据出来
-     const  {data}  = yield call(() =>query("ddd")); //call 是调用执行 query查询
+     //这里执行的就是异步,call执行函数之后返回promise,才会有数据出来
+     const  {data}  = yield call(() =>login(newData)); //call 是调用执行 login查询
      //const todos = yield select(state => state.todos); //用于从 state 里获取数据。
      console.log(data);
+     //console.log(state);
      if (data) {
-
        yield put({
          type: 'querySuccess',
          payload: {
@@ -66,10 +71,24 @@ export default {
        });
      }
    },
-   *create(){},
+   *create({ payload : newData },{ select ,call, put}){
+     yield put({ type:'showLoading'});
+     const {data} = yield call(() => register(newData));
+     console.log(data);
+     if (data) {
+       yield put({
+         type: 'createSuccess',
+         payload: {
+           ...newData,
+         }
+       });
+     }
+   },
    //因为delete是关键字,所以要特殊处理
    *'delete'(){},
    *update(){},
+   *query(){},
+
   },
   subscriptions: {},
 };
