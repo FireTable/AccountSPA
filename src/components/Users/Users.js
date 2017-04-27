@@ -35,6 +35,25 @@ function Users({userData}) {
    });
   }
 
+  //删除
+  function _delete() {
+    const newData = userData;
+    userData.dispatch({
+      type: 'users/_delete',
+      payload:newData,
+   });
+  }
+
+  //更新
+  function update(){
+    const newData = userData;
+    console.log(newData.password);
+    userData.dispatch({
+      type: 'users/update',
+      payload:newData,
+   });
+  }
+
   //已用箭头函数来代替原来的赋值function
   //详情看相关InputItem
   // function getInputItemValue(value){
@@ -52,7 +71,7 @@ function Users({userData}) {
           </InputItem>
         </Flex>
 
-        <Tag >{userData.username}</Tag>
+        <Tag >{userData.id}</Tag>
 
         {/* 多功能输入框2 */}
         <Flex justify="center">
@@ -66,12 +85,19 @@ function Users({userData}) {
       </Flex>
       <WhiteSpace size="lg" />
 
-      {/* 账spa_登录注册按钮  */}
+      {/* 账spa_登录+注册按钮  */}
       <Flex direction="column">
         <Button className={styles.btnStyle} size="small" type="primary"
           onClick={login}>登   录</Button>
         <Button size="small" type="ghost" onClick={register}>注   册</Button>
       </Flex>
+
+      <Flex direction="column">
+        <Button className={styles.btnStyle} size="small" type="primary"
+          onClick={_delete}>删   除</Button>
+        <Button size="small" type="ghost" onClick={update}>更   新</Button>
+      </Flex>
+
       <PlaceHolder/>
       <WhiteSpace/>
       {/* <ActivityIndicator text="加载中..." animating={userData.loading}/> */}

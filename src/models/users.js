@@ -1,5 +1,5 @@
 //引入请求相关（与后台系统的交互）模块
-import { login,create as register } from '../services/users';
+import { login,create as register,_delete,update } from '../services/users';
 
 
 export default {
@@ -12,7 +12,7 @@ export default {
     phone:'',
     email:'',
     location:'',
-    age:null,
+    age:0,
     sex:'',
     role_id:null,
     alipay:'',
@@ -47,9 +47,19 @@ export default {
       };
     },
     //删除,管理员用的
-    deleteSuccess(){},
+    deleteSuccess(){
+      alert('删除成功');
+      return{
+        loading: false,
+      };
+    },
     //更新
-    updateSuccess(){},
+    updateSuccess(){
+      alert('更新成功');
+      return{
+        loading: false,
+      };
+    },
   },
   effects: {
     //call 是调用执行一个函数
@@ -57,7 +67,6 @@ export default {
     //select 可以用来访问其它 model
   *login({ payload : newData }, { select, call, put }) {
      yield put({ type: 'showLoading' }); //执行reducer中的showloading();
-     //这里执行的就是异步,call执行函数之后返回promise,才会有数据出来
      const  {data}  = yield call(() =>login(newData)); //call 是调用执行 login查询
      //const todos = yield select(state => state.todos); //用于从 state 里获取数据。
      console.log(data);
@@ -67,6 +76,7 @@ export default {
          type: 'querySuccess',
          payload: {
            ...newData,
+           ...data
          }
        });
      }
@@ -80,14 +90,42 @@ export default {
          type: 'createSuccess',
          payload: {
            ...newData,
+           ...data
          }
        });
      }
    },
    //因为delete是关键字,所以要特殊处理
-   *'delete'(){},
-   *update(){},
-   *query(){},
+   *_delete({ payload : newData },{ select ,call, put}){
+     console.log(newData);
+     yield put({ type:'showLoading'});
+     const {data} = yield call(() => _delete(newData));
+     if (data) {
+       yield put({
+         type: 'deleteSuccess',
+         payload: {
+           ...newData,
+           ...data
+         }
+       });
+     }
+   },
+   *update({ payload : newData },{ select ,call, put}){
+     yield put({ type:'showLoading'});
+     const {data} = yield call(() => update(newData));
+     console.log(data);
+     if (data) {
+       yield put({
+         type: 'updateSuccess',
+         payload: {
+           data
+         }
+       });
+     }
+   },
+   *query(){
+     //暂无实现
+   },
 
   },
   subscriptions: {},

@@ -15,7 +15,7 @@
   },
   "proxy": {
   "/api": {
-    "target": "http://jsonplaceholder.typicode.com/",
+    "target": "http://localhost/accountspa_php/public/index.php/api/",
     "changeOrigin": true,
     "pathRewrite": { "^/api" : "" }
     }
