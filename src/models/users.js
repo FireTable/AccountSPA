@@ -39,24 +39,35 @@ export default {
         loading: false,
       };
     },
-    //添加
-    createSuccess(){
+    //查询
+    queryFail(state,{payload:newData}){
+      return{...state,
+        ...newData,
+        loading: false,
+      };
+    },
+    //添加成功
+    createSuccess(state,{payload:newData}){
       alert('注册成功');
-      return{
+      return{...state,
+        ...newData,
         loading: false,
       };
     },
     //删除,管理员用的
-    deleteSuccess(){
+    deleteSuccess(state,{payload:newData}){
       alert('删除成功');
       return{
+        // ...state,
+        // ...newData,
         loading: false,
       };
     },
-    //更新
-    updateSuccess(){
+    //更新成功
+    updateSuccess(state,{payload:newData}){
       alert('更新成功');
-      return{
+      return{...state,
+        ...newData,
         loading: false,
       };
     },
@@ -71,15 +82,21 @@ export default {
      //const todos = yield select(state => state.todos); //用于从 state 里获取数据。
      console.log(data);
      //console.log(state);
+     let reducerType;
      if (data) {
-       yield put({
-         type: 'querySuccess',
-         payload: {
-           ...newData,
-           ...data
-         }
-       });
+       reducerType ='querySuccess';
+     }else{
+       reducerType ='queryFail';
      }
+     yield put({
+       type: reducerType,
+       payload: {
+         //将输入框的账号密码放进模型,如果查询到了会覆盖相关信息
+         //没有查询到只会有输入框账号密码
+         ...newData,
+         ...data
+       }
+     });
    },
    *create({ payload : newData },{ select ,call, put}){
      yield put({ type:'showLoading'});
@@ -89,7 +106,6 @@ export default {
        yield put({
          type: 'createSuccess',
          payload: {
-           ...newData,
            ...data
          }
        });
@@ -104,7 +120,6 @@ export default {
        yield put({
          type: 'deleteSuccess',
          payload: {
-           ...newData,
            ...data
          }
        });
@@ -118,7 +133,7 @@ export default {
        yield put({
          type: 'updateSuccess',
          payload: {
-           data
+           ...data
          }
        });
      }

@@ -47,7 +47,6 @@ function Users({userData}) {
   //更新
   function update(){
     const newData = userData;
-    console.log(newData.password);
     userData.dispatch({
       type: 'users/update',
       payload:newData,
@@ -61,41 +60,35 @@ function Users({userData}) {
   // }
   return (
     <div className={styles.normal}>
-      {/* 账spa_多功能输入框  */}
-      <Flex direction="column" >
+      
+      {/* 多功能输入框  */}
         {/* 多功能输入框1 */}
-        <Flex justify="center">
-          <InputItem clear placeholder="请输入已验证的手机号或邮箱"  onChange={value => userData.username = value}>
-            账号
+          <WhiteSpace size="lg" />
+          <InputItem  className={styles.inputStyle}  clear placeholder="请输入已验证的手机号或邮箱"  onChange={value => userData.username = value}>
             {/* <Icon type={require('!svg-sprite!../../assets/icons/user.svg')} size="lg" /> */}
+
           </InputItem>
-        </Flex>
-
-        <Tag >{userData.id}</Tag>
-
         {/* 多功能输入框2 */}
-        <Flex justify="center">
-          <InputItem clear placeholder="密码" onChange={value => userData.password = value}>
-            密码
+          <InputItem clear placeholder="密码" onChange={value => userData.password = value} >
             {/* <Icon type={require('!svg-sprite!../../assets/icons/user.svg')} size="lg" /> */}
           </InputItem>
-        </Flex>
-        <Tag >{userData.password}</Tag>
 
-      </Flex>
-      <WhiteSpace size="lg" />
+        <WhiteSpace size="lg" />
+        <WhiteSpace size="lg" />
 
       {/* 账spa_登录+注册按钮  */}
       <Flex direction="column">
+        {/* <Tag >{userData.id}</Tag>
+        <Tag >{userData.password}</Tag> */}
         <Button className={styles.btnStyle} size="small" type="primary"
           onClick={login}>登   录</Button>
-        <Button size="small" type="ghost" onClick={register}>注   册</Button>
+        <Button className={styles.btnStyle} size="small" type="ghost" onClick={register}>注   册</Button>
       </Flex>
 
       <Flex direction="column">
         <Button className={styles.btnStyle} size="small" type="primary"
           onClick={_delete}>删   除</Button>
-        <Button size="small" type="ghost" onClick={update}>更   新</Button>
+        <Button className={styles.btnStyle} size="small" type="ghost" onClick={update}>更   新</Button>
       </Flex>
 
       <PlaceHolder/>

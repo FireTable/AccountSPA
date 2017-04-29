@@ -13,7 +13,7 @@ function Information({informationData}) {
       {/* 账spa_logo */}
       <Flex direction="column" >
         <Icon type={require('!svg-sprite!../../assets/icons/QQicon.svg')} size="lg" />
-        <Tag>{informationData.title}</Tag>
+        {/* <Tag>{informationData.title}</Tag> */}
       </Flex>
 
       <WhiteSpace size="lg" />
