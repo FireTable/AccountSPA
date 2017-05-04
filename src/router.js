@@ -3,6 +3,7 @@ import { Router, Route } from 'dva/router';
 import IndexPage from './routes/IndexPage';
 import Welcome from "./routes/Welcome.js";
 
+
 function RouterConfig({ history }) {
   return (
     <Router history={history}>

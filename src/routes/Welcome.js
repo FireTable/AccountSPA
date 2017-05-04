@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import styles from './Welcome.css';
-import InformationComponent from '../components/Information/Information';
-import UserComponent from '../components/Users/Users';
+import APP_InformationComponent from '../components/Information/APP_Information/APP_Information';
+import UserComponent from '../components/Login_Register/Login_Register';
 
 function Welcome({userData,informationData,dispatch}) {
   //将dispatch直接放进data中,直接引入
@@ -11,7 +11,7 @@ function Welcome({userData,informationData,dispatch}) {
 
   return (
     <div className={styles.normal}>
-      <InformationComponent informationData={informationData} />
+      <APP_InformationComponent informationData={informationData} />
       <UserComponent userData={userData}  />
     </div>
   );

@@ -23,6 +23,8 @@ const app = dva({
 // app.model(require('./models/example'));
 app.model(require("./models/information"));
 
+app.model(require("./models/averageLists"));
+
 app.model(require("./models/users"));
 
 // 4. Router

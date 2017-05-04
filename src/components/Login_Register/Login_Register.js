@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './Users.css';
+import styles from './Login_Register.css';
 
 import { ActivityIndicator,Tag,Icon,Flex, WhiteSpace, WingBlank,Button,InputItem} from 'antd-mobile';
 
-function Users({userData}) {
+function Login_Register({userData}) {
 
   const PlaceHolder = props => (
     <div style={{
@@ -60,7 +60,7 @@ function Users({userData}) {
   // }
   return (
     <div className={styles.normal}>
-      
+
       {/* 多功能输入框  */}
         {/* 多功能输入框1 */}
           <WhiteSpace size="lg" />
@@ -99,4 +99,4 @@ function Users({userData}) {
   );
 }
 
-export default Users;
+export default Login_Register;
