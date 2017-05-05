@@ -5,38 +5,19 @@ import { query,create,_delete,update } from '../services/averagelist';
 export default {
   namespace: 'averageLists',
   state: {
-     averageData : [
+    testData:'待加载',
+    realData: [
       {
-        img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-        title: '相约酒店',
-        des: '不是所有的兼职汪都需要风吹日晒',
+        id:'加载失败',
+        title: '加载失败',
+        tips:'加载失败',
+        cost: '加载失败',
+        creator_id:'加载失败',
+        actor_id:'加载失败',
+        state:'加载失败',
+        created_at:'加载失败',
+        updated_at:'加载失败',
       },
-      {
-        img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-        title: '麦当劳邀您过周末',
-        des: '不是所有的兼职汪都需要风吹日晒',
-      },
-      {
-        img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-        title: '食惠周',
-        des: '不是所有的兼职汪都需要风吹日晒',
-      },
-    ],
-    data :[
-      {
-        id:'',
-        title: '约会',
-        tips:'哈哈哈',
-        cost: '15',
-        creator_id:'',
-        actor_id:'',
-        state:'',
-        created_at:'',
-        updated_at:'',
-      },
-    ],
-    list :[
-
     ],
 
   },
@@ -45,8 +26,9 @@ export default {
     hideModal(){},
     //查询
     querySuccess(state,{payload:newData}){
-      return{...state,
-        ...newData,
+      return{
+        ...state,
+        realData:newData.data,
       };
     },
     //查询
@@ -117,18 +99,29 @@ export default {
      }
    },
    *query({ payload : newData },{ select ,call, put}){
-     const {data} = yield call(() => query(newData));
-     console.log(data);
+     const {data} = yield call(() => query());
      if (data) {
        yield put({
          type: 'querySuccess',
          payload: {
-           ...data
+           data
          }
        });
      }
    },
 
   },
-  subscriptions: {},
+  subscriptions: {
+    setup({ dispatch, history }) {
+      console.log('订阅');
+      return history.listen(({ pathname, newData }) => {
+        if (pathname === '/') {
+          dispatch({
+            type: 'averageLists/query',
+            payload: newData
+          });
+        }
+      });
+    },
+  },
   };

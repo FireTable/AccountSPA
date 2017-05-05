@@ -59,9 +59,9 @@ export async function update(params) {
 
 //查询
 export async function query(params) {
-  const data =request(`${url}/login/${params.username}`,
+  const data =request(`${url}/query`,
   {
-    method: 'POST'
+    method: 'GET'
   });
 
   return data;
