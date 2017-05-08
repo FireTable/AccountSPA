@@ -1,35 +1,49 @@
-//引入请求相关（与后台系统的交互）模块
-import { query,create,_delete,update } from '../services/averagelist';
-
+import { query,create,_delete,update } from '../services/averagedetail';
 
 export default {
-  namespace: 'averageLists',
+  namespace: 'averageDetails',
   state: {
-    realData: [
-      {
-        id:'待加载',
-        title: '待加载',
-        tips:'待加载',
-        cost: '待加载',
-        creator_id:'待加载',
-        actor_id:'待加载',
-        state:'待加载',
-        created_at:'待加载',
-        updated_at:'待加载',
-      },
-    ],
-
+      id:'',
+      title: '',
+      tips:'',
+      averagelist_id:'',
+      cost: '',
+      creator_id:'',
+      actor_id:'',
+      state:'不免单',
+      actor_num:'',
+      realData: [
+        {
+          id:'待加载',
+          title: '待加载',
+          tips:'待加载',
+          averagelist_id:'待加载',
+          cost: '待加载',
+          creator_id:'待加载',
+          actor_id:'待加载',
+          state:'待加载',
+          actor_num:'待加载',
+          created_at:'待加载',
+          updated_at:'待加载',
+        },
+        {
+          id:'待加载',
+          title: '待加载',
+          tips:'待加载',
+          averagelist_id:'待加载',
+          cost: '待加载',
+          creator_id:'待加载',
+          actor_id:'待加载',
+          state:'待加载',
+          actor_num:'待加载',
+          created_at:'待加载',
+          updated_at:'待加载',
+        },
+      ],
   },
   reducers: {
     showModal(){}, // 控制 Modal 显示状态的 reducer
     hideModal(){},
-    changeState(state,{payload:newData}){
-      console.log(newData);
-      return{
-        ...state,
-        state:newData,
-      };
-    },
     //查询
     querySuccess(state,{payload:newData}){
       return{
@@ -123,7 +137,7 @@ export default {
       return history.listen(({ pathname, newData }) => {
         if (pathname === '/') {
           dispatch({
-            type: 'averageLists/query',
+            type: 'averageDetails/query',
             payload: newData
           });
         }

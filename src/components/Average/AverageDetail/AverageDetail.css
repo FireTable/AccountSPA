@@ -1,0 +1,25 @@
+
+
+.normal {
+  text-align: center;
+}
+
+.div_left{
+  width:80%;
+  float:left;
+}
+
+.div_right{
+  width:80%;
+  float:right;
+}
+
+.div_text{
+  text-align: center;
+}
+
+.div_btn{
+  position:fixed;
+  right:0.1rem;
+  bottom: 0.1rem;
+}
