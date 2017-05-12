@@ -8,16 +8,16 @@ import User_InformationComponent from '../components/Information/User_Informatio
 
 
 
-function IndexPage({averageListData,dispatch}) {
+function IndexPage({userData,averageListData,dispatch}) {
 
   averageListData = {...averageListData,dispatch};
-
+  userData = {...userData,dispatch};
   return (
     <div className={styles.normal}>
-        <MainLayoutComponent>
-          <AverageListComponent averageListData={averageListData} />
+        <MainLayoutComponent averageListData={averageListData} >
+          <AverageListComponent averageListData={averageListData}  userData={userData}/>
           <AccountComponent />
-          <User_InformationComponent />
+          <User_InformationComponent userData={userData}/>
         </MainLayoutComponent>
     </div>
   );
@@ -27,8 +27,10 @@ IndexPage.propTypes = {
 };
 
 function mapStateToProps(state) {
+  const userData = state.users;
   const averageListData=state.averageLists;
   return {
+    userData:userData,
     averageListData:averageListData,
   };
 }

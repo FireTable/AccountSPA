@@ -11,7 +11,7 @@ function paramsTOformData(params){
   let paramsValue;
   for(let paramsKey in params){
     //将dispatch也去掉
-    if(paramsKey != "dispatch" && paramsKey != "loading"){
+    if(paramsKey != "dispatch" && paramsKey != "loading" && paramsKey != "icon"&& paramsKey != "role_id"){
      paramsValue = params[paramsKey];
      formData.append(paramsKey,paramsValue);
    }
@@ -45,6 +45,7 @@ export async function _delete(params) {
 
 //更新,patch提交的是json
 export async function update(params) {
+  console.log(params);
   const data =request(`${url}/update/${params.id}`,
   {
     method: 'PATCH',//PUT对资源完全替换,PATCH局部替换
@@ -59,9 +60,21 @@ export async function update(params) {
 
 //查询
 export async function query(params) {
-  const data =request(`${url}/login/${params.username}`,
+  const data =request(`${url}/query`,
   {
     method: 'POST'
+  });
+
+  return data;
+}
+
+//查询参与者
+export async function queryActor(params) {
+  console.log('ddd');
+  console.log(params);
+  const data =request(`${url}/queryActor/${params.actor_id}`,
+  {
+    method: 'GET'
   });
 
   return data;

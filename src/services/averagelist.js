@@ -63,6 +63,32 @@ export async function query(params) {
   {
     method: 'GET'
   });
+  return data;
+}
+
+//查询list
+export async function queryAverageList(params) {
+  console.log(params);
+  const data =request(`${url}/query/${params}`,
+  {
+    method: 'GET'
+  });
+
+  return data;
+}
+
+//更新,patch提交的是json
+export async function addList(params) {
+  console.log('addList');
+console.log(params);
+  const data =request(`${url}/addlist/${params.id}`,
+  {
+    method: 'PATCH',//PUT对资源完全替换,PATCH局部替换
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(params)
+  });
 
   return data;
 }

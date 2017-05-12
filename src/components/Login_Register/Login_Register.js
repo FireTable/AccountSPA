@@ -1,21 +1,12 @@
 import React from 'react';
 import styles from './Login_Register.css';
+import { routerRedux } from 'dva/router';
 
 import { ActivityIndicator,Tag,Icon,Flex, WhiteSpace, WingBlank,Button,InputItem} from 'antd-mobile';
 
 function Login_Register({userData}) {
 
-  const PlaceHolder = props => (
-    <div style={{
-      backgroundColor: '#ebebef',
-      color: '#bbb',
-      textAlign:'center',
-      height: '0.6rem',
-      lineHeight: '0.6rem',
-      width: '100%',
-    }} {...props}
-    >Item</div>
-  );
+  console.log(userData);
 
   //登录方法,通过payload来上传数据给model
   function login() {
@@ -24,6 +15,7 @@ function Login_Register({userData}) {
       type: 'users/login',
       payload:newData,
    });
+
   }
 
   //注册
@@ -53,6 +45,15 @@ function Login_Register({userData}) {
    });
   }
 
+  //查询参与者
+  function queryActor(){
+    const newData = userData;
+    userData.dispatch({
+      type: 'users/queryActor',
+      payload:newData,
+   });
+  }
+
   //已用箭头函数来代替原来的赋值function
   //详情看相关InputItem
   // function getInputItemValue(value){
@@ -64,34 +65,40 @@ function Login_Register({userData}) {
       {/* 多功能输入框  */}
         {/* 多功能输入框1 */}
           <WhiteSpace size="lg" />
-          <InputItem  className={styles.inputStyle}  clear placeholder="请输入已验证的手机号或邮箱"  onChange={value => userData.username = value}>
+          <InputItem   placeholder="请输入账号"  defaultValue={userData.username}
+            onChange={value => userData.username = value}>
             {/* <Icon type={require('!svg-sprite!../../assets/icons/user.svg')} size="lg" /> */}
-
+            账号
           </InputItem>
         {/* 多功能输入框2 */}
-          <InputItem clear placeholder="密码" onChange={value => userData.password = value} >
+          <InputItem  placeholder="请输入密码"  type ='password' defaultValue={userData.password}
+            onChange={value => userData.password = value} >
             {/* <Icon type={require('!svg-sprite!../../assets/icons/user.svg')} size="lg" /> */}
+            密码
           </InputItem>
 
         <WhiteSpace size="lg" />
         <WhiteSpace size="lg" />
 
       {/* 账spa_登录+注册按钮  */}
+
       <Flex direction="column">
         {/* <Tag >{userData.id}</Tag>
         <Tag >{userData.password}</Tag> */}
         <Button className={styles.btnStyle} size="small" type="primary"
           onClick={login}>登   录</Button>
+          <WhiteSpace/>
         <Button className={styles.btnStyle} size="small" type="ghost" onClick={register}>注   册</Button>
       </Flex>
 
-      <Flex direction="column">
+
+      {/* <Flex direction="column">
         <Button className={styles.btnStyle} size="small" type="primary"
           onClick={_delete}>删   除</Button>
         <Button className={styles.btnStyle} size="small" type="ghost" onClick={update}>更   新</Button>
-      </Flex>
+        <Button className={styles.btnStyle} size="small" type="ghost" onClick={queryActor}>查询参与者</Button>
+      </Flex> */}
 
-      <PlaceHolder/>
       <WhiteSpace/>
       {/* <ActivityIndicator text="加载中..." animating={userData.loading}/> */}
     </div>

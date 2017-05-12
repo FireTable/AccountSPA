@@ -9,9 +9,8 @@ function paramsTOformData(params){
   const formData = new FormData;
   let paramsValue;
   for(let paramsKey in params){
-    //将状态给去掉,让数据库自己加
     //将dispatch也去掉
-    if(paramsKey != "state" && paramsKey != "dispatch" && paramsKey != "loading"){
+    if(paramsKey != "dispatch" ){
      paramsValue = params[paramsKey];
      formData.append(paramsKey,paramsValue);
    }
@@ -24,6 +23,8 @@ export async function create(params) {
   //post需要用formData来传输值,fetch中并没有内置,需要自己创建
   //这里我用了个params转换为formdata的自写方法
   const  formData = paramsTOformData(params);
+  console.log('services中,create');
+  console.log(params);
   const data =request(`${url}/create`,
   {
     method: 'POST',
@@ -57,9 +58,9 @@ export async function update(params) {
   return data;
 }
 
-//查询
-export async function query(params) {
-  const data =request(`${url}/query`,
+//查询details
+export async function queryDetails(params) {
+  const data =request(`${url}/query/${params.id}`,
   {
     method: 'GET'
   });

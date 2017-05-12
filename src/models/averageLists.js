@@ -1,11 +1,19 @@
 //引入请求相关（与后台系统的交互）模块
-import { query,create,_delete,update } from '../services/averagelist';
-
+import { query,create,_delete,update,get,queryAverageList,addList} from '../services/averagelist';
+import {Toast} from 'antd-mobile';
 
 export default {
   namespace: 'averageLists',
   state: {
-    realData: [
+    id:'',
+    title: '',
+    tips:'',
+    cost: '',
+    creator_id:'',
+    actor_id:'',
+    password:'',
+    state:'进行中',
+    averageLists: [
       {
         id:'待加载',
         title: '待加载',
@@ -13,6 +21,7 @@ export default {
         cost: '待加载',
         creator_id:'待加载',
         actor_id:'待加载',
+        password:'待加载',
         state:'待加载',
         created_at:'待加载',
         updated_at:'待加载',
@@ -23,18 +32,21 @@ export default {
   reducers: {
     showModal(){}, // 控制 Modal 显示状态的 reducer
     hideModal(){},
-    changeState(state,{payload:newData}){
+    //更新Model的state
+    updateState(state,{payload:newData}){
+      console.log('abc');
       console.log(newData);
       return{
         ...state,
-        state:newData,
+        ...newData,
       };
     },
     //查询
     querySuccess(state,{payload:newData}){
+      console.log(newData);
       return{
         ...state,
-        realData:newData.data,
+        averageLists:newData.data,
       };
     },
     //查询
@@ -45,7 +57,12 @@ export default {
     },
     //添加成功
     createSuccess(state,{payload:newData}){
-      alert('创建成功');
+      return{...state,
+        ...newData,
+      };
+    },
+    //加入成功
+    addSuccess(state,{payload:newData}){
       return{...state,
         ...newData,
       };
@@ -115,6 +132,84 @@ export default {
        });
      }
    },
+   //查询列表
+   *queryAverageList({ payload : newData },{ select ,call, put}){
+     //获取user的averageLists_id
+     const id = yield select(state=>state.users.averagelists_id);
+     const {data} = yield call(() => queryAverageList(id));
+     if (data) {
+       yield put({
+         type: 'querySuccess',
+         payload: {
+           data
+         }
+       });
+     }
+   },
+   *createList({ payload : newData },{ select ,call, put}){
+     const creator_id = yield select(state=>state.users.id);
+     const actor_id = `${creator_id}-`;
+     newData = {...newData,'creator_id':creator_id,'actor_id':actor_id};
+     const {data} = yield call(() => create(newData));
+     if (data) {
+       console.log('创建了list');
+       console.log(data);
+       //创建了之后要更新user的参与list
+       const userData = yield select(state => state.users);
+       console.log('userData');
+       console.log(userData);
+       const averagelists_id = `${userData.averagelists_id}${data.id}-`;
+       const newUserData = {...userData,averagelists_id:averagelists_id};
+       console.log('newwwwwwwwuserData');
+       console.log(newUserData);
+       yield put({
+          type: 'users/update',
+          payload: {
+            ...newUserData
+          }
+        });
+      //更新list
+       yield put({
+         type: 'createSuccess',
+         payload: {
+           data
+         }
+       });
+     }
+   },
+   //加入活动
+   *addList({ payload : newData },{ select ,call, put}){
+     //拿到的是userid和password和表id
+     const userData = yield select(state => state.users);
+     newData ={...newData,'userid':userData.id}
+     const {data} = yield call(() => addList(newData));
+     console.log(data);
+     if (data) {
+       console.log('加入成功');
+       //加入了之后要更新user的参与list
+       console.log('userData');
+       console.log(userData);
+       const averagelists_id = `${userData.averagelists_id}${data.id}-`;
+       const newUserData = {...userData,averagelists_id:averagelists_id};
+       console.log(newUserData);
+       yield put({
+          type: 'users/update',
+          payload: {
+            ...newUserData
+          }
+        });
+      //更新list
+       yield put({
+         type: 'addSuccess',
+         payload: {
+           data
+         }
+       });
+     }else{
+       //错误提示
+       Toast.info('信息错误，无法加入...', 1.5);
+     }
+   },
 
   },
   subscriptions: {
@@ -123,7 +218,7 @@ export default {
       return history.listen(({ pathname, newData }) => {
         if (pathname === '/') {
           dispatch({
-            type: 'averageLists/query',
+            type: 'averageLists/queryAverageList',
             payload: newData
           });
         }
