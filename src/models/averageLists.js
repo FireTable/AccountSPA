@@ -1,5 +1,5 @@
 //引入请求相关（与后台系统的交互）模块
-import { query,create,_delete,update,get,queryAverageList,addList} from '../services/averagelist';
+import { query,create,_delete,update,get,queryAverageList,addList,outList} from '../services/averagelist';
 import {Toast} from 'antd-mobile';
 
 export default {
@@ -67,6 +67,12 @@ export default {
         ...newData,
       };
     },
+    //更新成功
+    updateSuccess(state,{payload:newData}){
+      return{...state,
+
+      };
+    },
     //删除,管理员用的
     deleteSuccess(state,{payload:newData}){
       alert('删除成功');
@@ -75,13 +81,7 @@ export default {
         // ...newData,
       };
     },
-    //更新成功
-    updateSuccess(state,{payload:newData}){
-      alert('更新成功');
-      return{...state,
-        ...newData,
-      };
-    },
+
   },
   effects: {
    *create({ payload : newData },{ select ,call, put}){
@@ -177,14 +177,30 @@ export default {
        });
      }
    },
+
    //加入活动
    *addList({ payload : newData },{ select ,call, put}){
      //拿到的是userid和password和表id
      const userData = yield select(state => state.users);
-     newData ={...newData,'userid':userData.id}
+     console.log('userData');
+     console.log(userData);
+     const averagelists_id = userData.averagelists_id;
+     //分割字符串
+     let operation = 'add';
+     const averagelists = averagelists_id.split("-"); //字符分割
+     averagelists.map(id=>{
+       if(id == newData.id){
+         operation = 'stop';
+       }
+     });
+     console.log('operation');
+     console.log(operation);
+     newData ={...newData,'userid':userData.id};
+     if(operation == 'add'){
      const {data} = yield call(() => addList(newData));
      console.log(data);
      if (data) {
+       Toast.info('加入成功...', 1.5);
        console.log('加入成功');
        //加入了之后要更新user的参与list
        console.log('userData');
@@ -209,6 +225,101 @@ export default {
        //错误提示
        Toast.info('信息错误，无法加入...', 1.5);
      }
+    }else if(operation =='stop'){
+     Toast.info('你已经加入该活动...', 1.5);
+    }
+   },
+
+   //退出活动
+   *outList({ payload : newData },{ select ,call, put}){
+     //拿到的是userid和password和表id
+     const userData = yield select(state => state.users);
+     console.log('userData');
+     console.log(userData);
+     let newActor_id ='';
+     let newAveragelists_id ='';
+     const averagelists_id = userData.averagelists_id;
+     const actors_id = newData.actor_id;
+     //分割字符串..一个是给User的,一个是给AverageList
+     const averagelist = averagelists_id.split("-"); //字符分割
+     const actor_id = actors_id.split("-"); //字符分割
+     averagelist.pop();
+     actor_id.pop();
+     //删除对应的,给User的
+     averagelist.map((id,index) =>{
+       if(id == newData.id){
+         averagelist.splice(index,1);
+       }
+     });
+     //重新组合,User
+     averagelist.map(id =>{
+       newAveragelists_id =`${newAveragelists_id}${id}-`;
+     });
+
+     //删除对应的,给List的
+     actor_id.map((id,index) =>{
+       if(id == userData.id){
+         actor_id.splice(index,1);
+       }
+     });
+     //重新组合,List
+     actor_id.map(id =>{
+       newActor_id =`${newActor_id}${id}-`;
+     });
+
+     console.log('new');
+     console.log(newActor_id);
+     console.log(newAveragelists_id);
+
+     newData ={...newData,'userid':userData.id,'actor_id':newActor_id,'averagelists_id':newAveragelists_id};
+     const {data} = yield call(() => outList(newData));
+     console.log(data);
+     if (data == 'success') {
+       Toast.info('退出成功...', 1.5);
+       console.log('退出成功');
+       //加入了之后要更新user的参与list
+       console.log('userData');
+       console.log(userData);
+       const newUserData = {...userData,averagelists_id:newAveragelists_id};
+       console.log(newUserData);
+       yield put({
+          type: 'users/update',
+          payload: {
+            ...newUserData
+          }
+        });
+     }else{
+       Toast.info('退出失败，你是活动创建者...', 1.5);
+     }
+   },
+
+   //结算活动
+   *updateList({ payload : newData },{ select ,call, put}){
+     //拿到的是userid和password和表id
+     const userData = yield select(state => state.users);
+     let operation = 'update';
+     if(userData.id != newData.creator_id){
+         operation = 'stop';
+    }
+     console.log('operation');
+     console.log(operation);
+     if(operation == 'update'){
+     const {data} = yield call(() => update(newData));
+     console.log(data);
+     if (data) {
+       Toast.info('结算成功...', 1.5);
+       //加入了之后要更新user的参与list
+      //更新list
+       yield put({
+         type: 'updateSuccess',
+         payload: {
+           data
+         }
+       });
+     }
+    }else if(operation =='stop'){
+     Toast.info('你不是创建者，无法结算...', 1.5);
+    }
    },
 
   },
@@ -217,6 +328,11 @@ export default {
       console.log('订阅');
       return history.listen(({ pathname, newData }) => {
         if (pathname === '/') {
+          newData ={...newData,dispatch};
+          dispatch({
+            type: 'users/hadLogin',
+            payload: newData
+          });
           dispatch({
             type: 'averageLists/queryAverageList',
             payload: newData
@@ -224,5 +340,6 @@ export default {
         }
       });
     },
+
   },
   };

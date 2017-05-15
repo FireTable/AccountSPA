@@ -51,6 +51,32 @@ export default {
     }, // 控制加载状态的 reducer
     showModal(){}, // 控制 Modal 显示状态的 reducer
     hideModal(){},
+
+    //登录的查询
+    outLogin(state,{payload:newData}){
+      //显示toast,并且自动跳转
+      return{...state,
+        id:null,
+        username:null,
+        nickname:'',
+        password:'',
+        phone:'',
+        email:'',
+        location:'',
+        age:0,
+        sex:'',
+        role_id:null,
+        alipay:'',
+        alipay_tips:'',
+        wechat:'',
+        wechat_tips:'',
+        averagelists_id:'',
+        icon:'',
+        actorLists:[],
+        actorLists_new:[],
+      };
+    },
+
     //查询参与者
     queryActorSuccess(state,{payload:newData}){
       return{...state,
@@ -65,7 +91,6 @@ export default {
       Toast.info('登录成功，正在跳转...', toastTime,
         ()=>newData.dispatch(routerRedux.push('/'))
       );
-
       return{...state,
         ...newData,
         loading: false,
@@ -133,6 +158,7 @@ export default {
      });
    },
    *create({ payload : newData },{ select ,call, put}){
+     newData = {...newData,'nickname':newData.username}
      const {data} = yield call(() => register(newData));
      const password = newData.password;
      if (data) {
@@ -176,10 +202,11 @@ export default {
    *query(){
      //暂无实现
    },
-   ////todos
+   ////查询参与者
    *queryActor({ payload : newData },{ select ,call, put}){
+     const id = yield select(state => state.averageLists.id);
      const actor_id = yield select(state => state.averageLists.actor_id);
-       newData ={...newData,actor_id:actor_id}
+       newData ={...newData,actor_id:actor_id,id:id}
        const getData = yield call(() => queryActor(newData));
        const actorLists = getData.data;
        if (actorLists) {
@@ -194,6 +221,13 @@ export default {
              }
            });
         }
+       }
+   },
+   //查证是否登录,没有就跳转
+   *hadLogin({ payload : newData },{ select ,call, put}){
+     const id = yield select(state => state.users.id);
+       if (id == null) {
+         newData.dispatch(routerRedux.push('/welcome'));
        }
    },
 

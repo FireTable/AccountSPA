@@ -77,7 +77,7 @@ export async function queryAverageList(params) {
   return data;
 }
 
-//更新,patch提交的是json
+//加入,patch提交的是json
 export async function addList(params) {
   console.log('addList');
 console.log(params);
@@ -88,6 +88,18 @@ console.log(params);
       'Content-Type':'application/json'
     },
     body:JSON.stringify(params)
+  });
+
+  return data;
+}
+
+//退出,patch提交的是json
+export async function outList(params) {
+console.log('outList');
+console.log(params);
+  const data =request(`${url}/outlist/${params.id}/${params.userid}/${params.actor_id}/${params.averagelists_id}`,
+  {
+    method: 'DELETE'
   });
 
   return data;

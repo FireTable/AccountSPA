@@ -51,6 +51,60 @@ export default {
       };
     },
 
+    // updateModal的查询参与者,需要排除
+    updateActorSuccess(state,{payload:newData}){
+      //往actorLists中添加text字段,用于grid显示名称
+      console.log('updateActorSuccess');
+      console.log(newData);
+      const inActor_id = newData.nowActor.split("-"); //字符分割
+      const allActor_id = newData.actor_id.split("-");
+      const actorLists = newData.actorLists;
+      let addTextshareListsData =[];
+      let addTextactorListsData =[];
+      allActor_id.pop();
+      inActor_id.pop();
+      inActor_id.map(id=>{
+        //if匹配到已经在了的,加到sharelistData里面
+        //如果匹配不到就放在actorList里面
+        let actorList = actorLists[id];
+        actorList = {...actorList,text:actorList.nickname};
+        console.log('actorList');
+        console.log(actorList);
+          addTextshareListsData.push(actorList);
+      });
+      //一个求差集算法
+      let outActor_id  = new Array();
+       allActor_id.map(all_id=>{
+        let had = true;
+        inActor_id.map(in_id=>{
+          if(in_id == all_id){
+            had = false;
+          }
+        });
+        if(had){
+          outActor_id.push(all_id);
+        }
+      });
+      console.log('差集结果');
+      console.log(outActor_id);
+      //差集循环
+      outActor_id.map(id=>{
+        //if匹配到已经在了的,加到sharelistData里面
+        //如果匹配不到就放在actorList里面
+        let actorList = actorLists[id];
+        actorList = {...actorList,text:actorList.nickname};
+        addTextactorListsData.push(actorList);
+      });
+
+      newData.shareLists = addTextshareListsData;
+      newData.actorLists = addTextactorListsData;
+      console.log('reducer中的updateActorSuccess');
+      console.log(newData);
+      return{
+      ...state,
+      ...newData
+      };
+    },
     // 保存actorlist
     saveActorList(state,{payload:shareLists,actor_id}){
       return{
@@ -59,8 +113,8 @@ export default {
       actor_id:actor_id
       };
     },
-    // 修改modal的是否可见,并且将进度条设为0
-    changeModalVisible(state,{payload:modalVisible,current}){
+    // 修改modal的是否可见,并且将进度条设为0,数据清空
+    createModalVisible(state,{payload:modalVisible,current}){
       return{
       ...state,
       modalVisible:modalVisible,
@@ -76,6 +130,15 @@ export default {
       current:0,
       actorLists:[],
       shareLists:[],
+      };
+    },
+    // 修改modal的是否可见,并且将进度条设为0,数据不清空
+    updateModalVisible(state,{payload:modalVisible,current,averageDetailData}){
+      return{
+      ...state,
+      ...averageDetailData,
+      modalVisible:modalVisible,
+      current:current,
       };
     },
     // 修改将进度条
@@ -102,7 +165,7 @@ export default {
     },
     //查询
     querySuccess(state,{payload:newData}){
-      console.log('保存');
+      console.log('保存数据');
       console.log(newData);
       return{
         ...state,
@@ -122,17 +185,17 @@ export default {
         ...newData,
       };
     },
-    //删除,管理员用的
+    //删除
     deleteSuccess(state,{payload:newData}){
-      alert('删除成功');
       return{
-        // ...state,
-        // ...newData,
+        ...state,
+        ...newData,
+        modalVisible:false,
+        current:0,
       };
     },
     //更新成功
     updateSuccess(state,{payload:newData}){
-      alert('更新成功');
       return{...state,
         ...newData,
       };
@@ -167,6 +230,7 @@ export default {
        });
      }
    },
+
    *update({ payload : newData },{ select ,call, put}){
      const {data} = yield call(() => update(newData));
      console.log(data);
@@ -181,11 +245,31 @@ export default {
    },
 
    *queryActor({ payload : newData },{ select ,call, put}){
+     console.log('queryActor');
+     console.log(newData);
        const actorLists = yield select(state => state.users.actorLists);
        yield put({
-         type: 'queryActorSuccess',
+         type: 'users/queryActor',
          payload: {
            actorLists
+         }
+       });
+   },
+
+   *updateActor({ payload : newData },{ select ,call, put}){
+     console.log('updateActor');
+     //newData.actor_id为现在的参与人的id string
+     //actorList这个活动的总参与人的id string
+      const actor_id = yield select(state => state.averageLists.actor_id);
+       const userData = yield select(state => state.users);
+       const actorLists = userData.actorLists_new;
+       const nowActor = newData.actor_id;
+       console.log(actor_id);
+        console.log(nowActor);
+       yield put({
+         type: 'updateActorSuccess',
+         payload: {
+           actorLists,nowActor,actor_id
          }
        });
    },
@@ -208,6 +292,7 @@ export default {
      const averageListData = yield select(state=>state.averageLists);
      const {data} = yield call(() => queryDetails(averageListData));
      if (data) {
+       console.log('查到');
        yield put({
          type: 'querySuccess',
          payload: {
@@ -223,10 +308,16 @@ export default {
       console.log('订阅');
       return history.listen(({ pathname, newData }) => {
         if (pathname === '/averagedetail') {
+          //验证登录
+          newData ={...newData,dispatch};
+          dispatch({
+            type: 'users/hadLogin',
+            payload: newData
+          });
           //获取该averageList的detail
           dispatch({
             type: 'averageDetails/queryDetails',
-            payload: newData
+            payload: {}
           });
           //获取averageList的actor_id,存放在users的model中
           dispatch({

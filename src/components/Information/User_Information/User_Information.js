@@ -1,12 +1,26 @@
 import React from 'react';
 import styles from './User_Information.css';
-import {List,InputItem,WhiteSpace,Card,Tag,Result,WingBlank,Flex,Button} from 'antd-mobile';
+import { routerRedux } from 'dva/router';
+import {List,InputItem,WhiteSpace,Card,Tag,Result,WingBlank,Flex,Button,Toast} from 'antd-mobile';
 
 const Item=List.Item;
 const Brief=Item.Brief;
 
 function User_Information({userData}) {
   console.log(userData);
+
+  function outLogin(){
+    userData.dispatch({
+      type:'users/outLogin',
+      payload:{
+      }
+    });
+
+    Toast.info('退出登录，正在跳转...', 1.3,
+      ()=>userData.dispatch(routerRedux.push('/welcome'))
+    );
+  }
+
   return (
     <div className={styles.normal}>
       <WhiteSpace />
@@ -19,7 +33,7 @@ function User_Information({userData}) {
                 账号：{userData.username}
                 </span>
                 <WhiteSpace size='sm'/>
-                <span style={{fontSize:'0.38rem'}}>
+                <span style={{fontSize:'0.5rem'}}>
                 创建时间：{userData.created_at}
                 </span>
               </WingBlank>
@@ -61,8 +75,8 @@ function User_Information({userData}) {
         </Item>
 
       </List>
-<WhiteSpace />
-      <Button size="small" type="warning" onClick={console.log('退出登录')}>退出登录</Button>
+      <WhiteSpace size='lg' />
+      <Button  size='small'  type="warning" onClick={()=>outLogin()}>退出登录</Button>
 
     </div>
   );

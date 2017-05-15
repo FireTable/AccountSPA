@@ -46,6 +46,8 @@ export async function _delete(params) {
 
 //更新,patch提交的是json
 export async function update(params) {
+  console.log('update_server');
+  console.log(params);
   const data =request(`${url}/update/${params.id}`,
   {
     method: 'PATCH',//PUT对资源完全替换,PATCH局部替换

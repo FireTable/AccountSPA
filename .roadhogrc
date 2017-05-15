@@ -3,7 +3,8 @@
   "env": {
     "development": {
       "extraBabelPlugins": [
-        "dva-hmr"
+        "dva-hmr",
+        "lodash"
 
       ]
     },
@@ -22,10 +23,16 @@
     }
   },
   "theme": {
-
+    "@brand-primary": "#108ee9",
     "@link-color": "#1DA57A",
     "@border-radius-base": "2px",
-    "@font-size-base": "24px"
+    "@font-size-base": "24px",
+    "@font-size-subhead": "26px",
+    "@font-size-caption": "28px",
+    "@font-size-heading": "30px",
+    "@font-size-display-sm": "32px",
+    "@font-size-display-md": "38px",
+    "@font-family-base": "微软雅黑"
 
   }
 }

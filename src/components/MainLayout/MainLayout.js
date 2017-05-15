@@ -80,10 +80,10 @@ class PopoverComponent extends React.Component {
         <Popover mask
           visible={this.state.visible}
           overlay={[
-            (<Item key="0" value="scan" disabled>扫一扫</Item>),
-            (<Item key="1" value="create" style={{ whiteSpace: 'nowrap' }}>创建活动</Item>),
+            (<Item key="0" value="scan" disabled><span style={{fontSize:'0.5rem'}}>扫一扫</span></Item>),
+            (<Item key="1" value="create" style={{ whiteSpace: 'nowrap' }}><span style={{fontSize:'0.5rem'}}>创建活动</span></Item>),
             (<Item key="2" value="add" >
-              <span style={{ marginRight: 5 }}>加入活动</span>
+              <span style={{ fontSize:'0.5rem' }}>加入活动</span>
             </Item>),
           ]}
           popupAlign={{
@@ -128,6 +128,7 @@ class CreatePopup extends React.Component {
   createList(){
     console.log(this.props);
     this.props.averageListData.cost ='0';
+    this.props.averageListData.id = null;
     const newData = this.props.averageListData;
     console.log(newData);
     //创建
@@ -168,6 +169,10 @@ class CreatePopup extends React.Component {
               onChange={value => this.props.averageListData.tips = value}>
               备注
             </InputItem>
+            <WhiteSpace/>
+            <span style={{fontSize:'0.5rem',color:'#F4333C'}}>
+              *活动创建后，无法删除、修改。请核对好信息。
+            </span>
             <WhiteSpace/>
           <Button  size="small" type="primary"
             onClick={()=>this.createList()}>创   建</Button>
@@ -210,7 +215,8 @@ class AddPopup extends React.Component {
       payload:newData,
    });
    //Toast,并且关闭Popup
-   Toast.info('加入活动中，请稍后...', 1.3,
+   setTimeout(()=>
+   Toast.info('返回中...', 1.3,
      ()=>{
        //加入成功后刷新列表
        this.props.averageListData.dispatch({
@@ -219,7 +225,7 @@ class AddPopup extends React.Component {
       });
        Popup.hide();
      }
-   );
+   ),1000);
 
   }
 
@@ -229,7 +235,7 @@ class AddPopup extends React.Component {
       <div style={{textAlign:'center'}}>
         <WingBlank>
         <List renderHeader={() => `加入活动`}>
-            <InputItem  clear placeholder='必填'
+            <InputItem  clear placeholder='必填，无需"#"号'
               onChange={value => this.props.averageListData.id = value}>
               编号
             </InputItem>
@@ -317,9 +323,9 @@ class MainLayout extends React.Component {
   renderIcon(url) {
     return (
       <div style={{
-        width: '0.44rem',
-        height: '0.44rem',
-        background: `url(${url}) center center /  0.42rem 0.42rem no-repeat` }}
+        width: '0.6rem',
+        height: '0.6rem',
+        background: `url(${url}) center center /  0.58rem 0.58rem no-repeat` }}
       />
     );
   }
@@ -360,8 +366,8 @@ class MainLayout extends React.Component {
         <TabBar.Item
           title="AA分账"
           key="AA分账"
-          icon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg')}
-          selectedIcon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg')}
+          icon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg')}
+          selectedIcon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg')}
           // 判断如果是该tab返回ture
           selected={this.state.selectedTab === 'leftTab'}
           onPress={() => {
@@ -374,7 +380,8 @@ class MainLayout extends React.Component {
         >
 
         </TabBar.Item>
-        <TabBar.Item
+
+        {/* <TabBar.Item
           icon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg')}
           selectedIcon={
           this.renderIcon('https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg')}
@@ -389,11 +396,11 @@ class MainLayout extends React.Component {
              });
           }}
         >
+        </TabBar.Item> */}
 
-        </TabBar.Item>
         <TabBar.Item
-          icon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg')}
-          selectedIcon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg')}
+          icon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg')}
+          selectedIcon={this.renderIcon('https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg')}
           title="我"
           key="我"
           selected={this.state.selectedTab === 'rightTab'}
@@ -408,8 +415,6 @@ class MainLayout extends React.Component {
 
         </TabBar.Item>
       </TabBar>
-
-
 
     </div>
     );

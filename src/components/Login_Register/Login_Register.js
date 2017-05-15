@@ -78,7 +78,7 @@ function Login_Register({userData}) {
           </InputItem>
 
         <WhiteSpace size="lg" />
-        <WhiteSpace size="lg" />
+
 
       {/* 账spa_登录+注册按钮  */}
 
