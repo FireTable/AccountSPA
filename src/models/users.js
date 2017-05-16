@@ -39,6 +39,8 @@ export default {
     loading: false, // 控制加载状态
     actorLists:[],
     actorLists_new:[],
+    modalType:'',
+    modalVisible:false,
 
     // modalVisible: false, // 弹出窗的显示状态
     // modalType: 'create', // 弹出窗的类型（添加用户，编辑用户）
@@ -63,7 +65,7 @@ export default {
         phone:'',
         email:'',
         location:'',
-        age:0,
+        age:'',
         sex:'',
         role_id:null,
         alipay:'',
@@ -74,6 +76,15 @@ export default {
         icon:'',
         actorLists:[],
         actorLists_new:[],
+        modalType:'',
+        modalVisible:false,
+      };
+    },
+
+    //修改modal是否可见
+    changeVisible(state,{payload:newData}){
+      return{...state,
+        ...newData
       };
     },
 

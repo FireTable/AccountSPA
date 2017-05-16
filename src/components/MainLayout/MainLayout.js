@@ -80,7 +80,7 @@ class PopoverComponent extends React.Component {
         <Popover mask
           visible={this.state.visible}
           overlay={[
-            (<Item key="0" value="scan" disabled><span style={{fontSize:'0.5rem'}}>扫一扫</span></Item>),
+            // (<Item key="0" value="scan" disabled><span style={{fontSize:'0.5rem'}}>扫一扫</span></Item>),
             (<Item key="1" value="create" style={{ whiteSpace: 'nowrap' }}><span style={{fontSize:'0.5rem'}}>创建活动</span></Item>),
             (<Item key="2" value="add" >
               <span style={{ fontSize:'0.5rem' }}>加入活动</span>
