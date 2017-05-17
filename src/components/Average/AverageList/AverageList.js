@@ -3,6 +3,7 @@ import { routerRedux} from 'dva/router';
 import styles from './AverageList.css';
 /* eslint no-dupe-keys: 0, no-mixed-operators: 0 */
 import { Button,List,WhiteSpace,Toast,Icon,SwipeAction} from 'antd-mobile';
+import QueueAnim from 'rc-queue-anim';
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -217,12 +218,11 @@ console.log(averageLists.length);
    const doneItemList = averageLists.map(averageList =>{
      if(averageList.state == '已完成')
      return(
-         <div>
+         <div key={averageList.id + 100}>
          {/* 会有警告信息说不是个函数 */}
          <SwipeAction
            style={{ backgroundColor: 'gray' }}
            autoClose
-
            right={[
              {
                text: '取消',
@@ -272,12 +272,14 @@ console.log(averageLists.length);
 
   return (
     <div className={styles.normal}>
-      <List renderHeader={() => '— 进行中 —'}>
+      <QueueAnim>
+      <List renderHeader={() => '— 进行中 —'} id='list1' key='1'>
         {doingItemList}
       </List>
-      <List renderHeader={() => '— 已完成 —'}>
+      <List renderHeader={() => '— 已完成 —'} id='list2' key='2'>
         {doneItemList}
       </List>
+    </QueueAnim>
     </div>
   );
 }

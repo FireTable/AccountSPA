@@ -6,7 +6,7 @@ import { browserHistory } from 'dva/router';
 // 1. Initialize
 const app = dva({
   //切换 history 为 browserHistory
-  history: browserHistory,
+//  history: browserHistory,
   //dva 里，effects 和 subscriptions 的抛错全部会走 onError hook，所以可以在 onError 里统一处理错误。
   onError(e, dispatch) {
     console.log(e.message);

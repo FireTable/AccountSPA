@@ -1,6 +1,7 @@
 import React from 'react';
 import {TabBar,Popover ,NavBar,Icon,WhiteSpace,Button,Popup,List,InputItem,WingBlank,Toast} from 'antd-mobile';
 import styles from './MainLayout.css';
+import QueueAnim from 'rc-queue-anim';
 
 /* eslint global-require: 0 */
 let nowTabContent;
@@ -336,15 +337,16 @@ class MainLayout extends React.Component {
   render() {
     return (
       <div className={styles.normal}>
-      <NavBar mode="light" iconName={false} rightContent={[
-        <div style={{display:`${this.state.display}`}}>
+      <QueueAnim>
+      <NavBar mode="light" iconName={false} key='1' rightContent={[
+        <div style={{display:`${this.state.display}`}} >
           {/* 不用Button了,改用气泡 */}
           {/* <Button  inline style={{fontSize:'1.0rem',border: '0px solid #ddd',width:'1.6rem' }} size='small'
                    activeStyle ={false}
                    onClick={()=>(event)=>
                      this.showPopup(event)
                    }> */}
-                 <PopoverComponent averageListData={this.props.averageListData}/>
+                 <PopoverComponent averageListData={this.props.averageListData} key='2'/>
         </div>
                ]
       }>{this.state.title}</NavBar>
@@ -415,7 +417,7 @@ class MainLayout extends React.Component {
 
         </TabBar.Item>
       </TabBar>
-
+    </QueueAnim>
     </div>
     );
   }

@@ -117,12 +117,17 @@ export default {
     },
     //添加成功
     createSuccess(state,{payload:newData}){
-      Toast.info('注册成功', toastTime);
+      Toast.info('恭喜你，注册成功', toastTime);
       return{...state,
         ...newData,
         loading: false,
       };
-    },
+    },    //添加失败
+  createFail(state,{payload:newData}){
+          Toast.info('注册失败，账号已存在', toastTime);
+          return{...state
+          };
+        },
     //删除,管理员用的
     deleteSuccess(state,{payload:newData}){
       alert('删除成功');
@@ -172,13 +177,19 @@ export default {
      newData = {...newData,'nickname':newData.username}
      const {data} = yield call(() => register(newData));
      const password = newData.password;
-     if (data) {
+     console.log(data.check);
+     if (data.check =='不存在') {
        yield put({
          type: 'createSuccess',
          payload: {
            password:password,
            ...data
          }
+       });
+     }else{
+       yield put({
+         type: 'createFail',
+         payload: {}
        });
      }
    },

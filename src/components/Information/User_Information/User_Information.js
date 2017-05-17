@@ -11,12 +11,12 @@ import {
   Tag,
   Result,
   WingBlank,
-  Flex,
   Button,
   Toast,
   Modal
 } from 'antd-mobile';
 import {UploaderBuilder, uploader} from 'qiniu4js';
+import QueueAnim from 'rc-queue-anim';
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -303,9 +303,9 @@ function User_Information({userData}) {
   return (
     <div className={styles.normal}>
       <WhiteSpace size='lg'/>
-
+      <QueueAnim>
       <WingBlank>
-        <Card>
+        <Card key='1'>
           <Card.Header title={< WingBlank size = 'sm' > <span style={{
             fontSize: '0.5rem'
           }}>
@@ -318,7 +318,7 @@ function User_Information({userData}) {
             width: '2rem'
           }} onClick={uploadIcon}/>
         </Card>
-        <Modal title={`修改信息`} transparent maskClosable closable={true} onClose={() => createModalVisible()} visible={modalVisible} footer={[
+        <Modal title={`修改信息`} transparent maskClosable closable={true} onClose={() => changeVisible('cancel')} key='3' visible={modalVisible} footer={[
           {
             text: '取消',
             onPress: () => {
@@ -338,8 +338,8 @@ function User_Information({userData}) {
         </Modal>
 
       </WingBlank>
-      <List renderHeader={() => '基本信息'}>
-        <Item arrow="horizontal" extra={userData.nickname} onClick={() => changeVisible('昵称')}>
+      <List renderHeader={() => '基本信息'} key='2'>
+        <Item arrow="horizontal" extra={userData.nickname} onClick={() => changeVisible('昵称')} key='3'>
           昵称
         </Item>
         <Picker data={sex} cols={1} title='选择性别'  extra={userData.sex}
@@ -350,31 +350,31 @@ function User_Information({userData}) {
              userData.dispatch({type: 'users/update', payload: userData});
            });
            }}>
-        <Item arrow="horizontal" extra={userData.sex} >
+        <Item arrow="horizontal" extra={userData.sex} key='4'>
           性别
         </Item>
         </Picker>
-        <Item arrow="horizontal" extra={userData.age} onClick={() => changeVisible('年龄')}>
+        <Item arrow="horizontal" extra={userData.age} onClick={() => changeVisible('年龄')} key='5'>
           年龄
         </Item>
-        <Item arrow="horizontal" extra={userData.phone} onClick={() => changeVisible('电话')}>
+        <Item arrow="horizontal" extra={userData.phone} onClick={() => changeVisible('电话')} key='6'>
           电话
         </Item>
-        <Item arrow="horizontal" extra={userData.email} onClick={() => changeVisible('邮箱')}>
+        <Item arrow="horizontal" extra={userData.email} onClick={() => changeVisible('邮箱')} key='7'>
           邮箱
         </Item>
       </List>
-      <List renderHeader={() => '支付信息'}>
-        <Item arrow="horizontal" extra={userData.alipay} onClick={() => changeVisible('支付宝')}>
+      <List renderHeader={() => '支付信息'} key='3'>
+        <Item arrow="horizontal" extra={userData.alipay} onClick={() => changeVisible('支付宝')} key='8'>
           支付宝
         </Item>
-        <Item arrow="horizontal" extra={userData.alipay_tips} onClick={() => changeVisible('支付宝备注')}>
+        <Item arrow="horizontal" extra={userData.alipay_tips} onClick={() => changeVisible('支付宝备注')} key='9'>
           支付宝·备注
         </Item>
-        <Item arrow="horizontal" extra={userData.wechat} onClick={() => changeVisible('微信')}>
+        <Item arrow="horizontal" extra={userData.wechat} onClick={() => changeVisible('微信')} key='10'>
           微信
         </Item>
-        <Item arrow="horizontal" extra={userData.wechat_tips} onClick={() => changeVisible('微信备注')}>
+        <Item arrow="horizontal" extra={userData.wechat_tips} onClick={() => changeVisible('微信备注')} key='11'>
           微信·备注
         </Item>
       </List>
@@ -382,7 +382,7 @@ function User_Information({userData}) {
       <Button size='small'  onClick={() => changeVisible('密码') }>修改密码</Button>
       <WhiteSpace size='md'/>
       <Button size='small' type="warning" onClick={() => outLogin()}>退出登录</Button>
-
+    </QueueAnim>
     </div>
   );
 }

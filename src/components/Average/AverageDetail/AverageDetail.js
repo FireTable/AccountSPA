@@ -3,7 +3,7 @@ import { routerRedux } from 'dva/router';
 import styles from './AverageDetail.css';
 /* eslint no-dupe-keys: 0, no-mixed-operators: 0 */
 import {  Icon,NavBar,Grid,Steps,Switch,Button,WhiteSpace,Card,WingBlank,Tag,Modal,Toast,List,InputItem} from 'antd-mobile';
-
+import QueueAnim from 'rc-queue-anim';
 
 const prompt = Modal.prompt;
 const Item = List.Item;
@@ -330,7 +330,7 @@ function pushActor_id(){
         //除了current的以上两种状态,其他上传数据,并且设置modal为看不见
         createModalVisible();
         //如果current==2,那么就是确认,上传数据,并且跳转刷新数据
-        if(current == 2){
+        if(current == 2 ){
           //modalType ==create 就新建
           if(modalType == 'create'){
             createNewDetail();
@@ -345,7 +345,9 @@ function pushActor_id(){
             }
             );
           }else if (modalType == 'update') {
+
               if(averageDetailData.creator_id == userData.id){
+                if(disabledBtn == false){
                 updateOldDetail();
                 //强制刷新,延迟一点,防止数据没更新
                 console.log('强制刷新');
@@ -358,6 +360,9 @@ function pushActor_id(){
                   });
                 }
                 );
+              }else{
+                    Toast.info('已完成的订单无法修改...', 1.5);
+              }
               }else{
                 Toast.info('无法修改他人的条目...', 1.5);
               }
@@ -430,7 +435,8 @@ function pushActor_id(){
        const index = averageDetailList.creator_id;
      return (
        <div className={divClass}>
-         <Tag >{actorLists[index].nickname}</Tag>
+         <Tag >{actorLists[index].nickname}</Tag><br/>
+         <Icon type={require('!svg-sprite!../../../assets/icons/card-down.svg')} size="xxs"  /> 
          <WingBlank size='lg'>
          <Card onClick={()=>{
            //打开修改modal
@@ -486,16 +492,19 @@ function pushActor_id(){
 
   return (
     <div className={styles.normal}>
+      <QueueAnim>
       <NavBar mode="light" iconName={require('!svg-sprite!../../../assets/icons/left.svg')}
         //leftContent='AA分账'
+        key='1'
         onLeftClick={() =>{
           averageDetailData.dispatch(routerRedux.push('/'));
         }
       }>{averageListData.title}</NavBar>
       <WhiteSpace size="md"/>
-      {CardList}
+
+      <div key='2'>{CardList}</div>
       <ModalComponent/>
-      <div className={styles.div_btn}>
+      <div className={styles.div_btn} key='3'>
       <Button  type="primary" inline style={{ margin: '0.08rem' }} disabled={disabledBtn}
                onClick={ () => {
                 addDetail();
@@ -503,6 +512,7 @@ function pushActor_id(){
                }}
                >+</Button>
       </div>
+    </QueueAnim>
     </div>
   );
 }

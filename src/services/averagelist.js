@@ -3,6 +3,7 @@ import qs from 'qs';
 
 //``使用连接字符串,request的url
 const url ='http://localhost:8000/api/averagelist';
+//const url ='http://xn--brva.top/AccountSPA_php/public/index.php/api/averagelist';
 
 //params转换为formData,提供给post用
 function paramsTOformData(params){

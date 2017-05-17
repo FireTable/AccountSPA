@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './Login_Register.css';
 import { routerRedux } from 'dva/router';
-
-import { ActivityIndicator,Tag,Icon,Flex, WhiteSpace, WingBlank,Button,InputItem} from 'antd-mobile';
+import { Tag,Flex, WhiteSpace, WingBlank,Button,InputItem} from 'antd-mobile';
+import QueueAnim from 'rc-queue-anim';
 
 function Login_Register({userData}) {
 
@@ -61,18 +61,19 @@ function Login_Register({userData}) {
   // }
   return (
     <div className={styles.normal}>
+      <QueueAnim>
 
       {/* 多功能输入框  */}
         {/* 多功能输入框1 */}
           <WhiteSpace size="lg" />
-          <InputItem   placeholder="请输入账号"  defaultValue={userData.username}
+          <InputItem   placeholder="请输入账号"  defaultValue={userData.username} key='input1'
             onChange={value => userData.username = value}>
             {/* <Icon type={require('!svg-sprite!../../assets/icons/user.svg')} size="lg" /> */}
             账号
           </InputItem>
         {/* 多功能输入框2 */}
-          <InputItem  placeholder="请输入密码"  type ='password' defaultValue={userData.password}
-            onChange={value => userData.password = value} >
+          <InputItem  placeholder="请输入密码"  type ='password' defaultValue={userData.password} key='input2'
+            onChange={value => userData.password = value}  >
             {/* <Icon type={require('!svg-sprite!../../assets/icons/user.svg')} size="lg" /> */}
             密码
           </InputItem>
@@ -82,14 +83,16 @@ function Login_Register({userData}) {
 
       {/* 账spa_登录+注册按钮  */}
 
-      <Flex direction="column">
+      <Flex direction="column" key='demo2'>
         {/* <Tag >{userData.id}</Tag>
         <Tag >{userData.password}</Tag> */}
         <Button className={styles.btnStyle} size="small" type="primary"
           onClick={login}>登   录</Button>
           <WhiteSpace/>
         <Button className={styles.btnStyle} size="small" type="ghost" onClick={register}>注   册</Button>
+
       </Flex>
+
 
 
       {/* <Flex direction="column">
@@ -100,7 +103,8 @@ function Login_Register({userData}) {
       </Flex> */}
 
       <WhiteSpace/>
-      {/* <ActivityIndicator text="加载中..." animating={userData.loading}/> */}
+
+    </QueueAnim>
     </div>
 
   );
