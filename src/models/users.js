@@ -254,5 +254,18 @@ export default {
    },
 
   },
-  subscriptions: {},
+  subscriptions: {
+    setup({ dispatch, history }) {
+      console.log('订阅');
+      return history.listen(({ pathname, newData }) => {
+        if (pathname === '/welcome') {
+          //关闭自动刷新计时器
+          dispatch({
+            type: 'averageLists/closeTimer',
+            payload: {}
+          });
+        }
+      });
+    },
+  },
 };

@@ -13,6 +13,7 @@ export default {
     actor_id:'',
     password:'',
     state:'进行中',
+    Timer:'',
     averageLists: [
       {
         id:'待加载',
@@ -81,6 +82,18 @@ export default {
         // ...newData,
       };
     },
+
+    //保存计时器数值
+    saveTimer(state,{payload:newData}){
+      console.log("saveTimer");
+      console.log(newData);
+      return{
+        ...state,
+        Timer:newData
+      };
+    },
+
+
 
   },
   effects: {
@@ -321,23 +334,47 @@ export default {
      Toast.info('你不是创建者，无法结算...', 1.5);
     }
    },
+   //关闭计时器数值
+   *closeTimer({ payload : newData },{ select ,call, put}){
+     console.log("closeTimer");
+     const Timer = yield select(state => state.averageLists.Timer);
+     clearInterval(Timer);
+   },
 
   },
   subscriptions: {
     setup({ dispatch, history }) {
       console.log('订阅');
       return history.listen(({ pathname, newData }) => {
+        let Timer = 0;
         if (pathname === '/') {
           newData ={...newData,dispatch};
           dispatch({
             type: 'users/hadLogin',
             payload: newData
           });
+
+          //设置定时器自动刷新
+          Timer=setInterval(()=>{
+            console.log('自动刷新');
+            dispatch({
+              type: 'averageLists/queryAverageList',
+              payload: newData
+            });
+         },10000);
+
+         //保存计时器数值
+         dispatch({
+           type: 'averageLists/saveTimer',
+           payload: Timer
+         });
+
           dispatch({
             type: 'averageLists/queryAverageList',
             payload: newData
           });
-        }
+
+       }
       });
     },
 

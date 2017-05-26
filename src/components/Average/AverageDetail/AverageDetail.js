@@ -53,6 +53,9 @@ disabledBtn = ((averageListData.state == '已完成') ? true : false );
 console.log('init');
 console.log(userData);
 console.log(averageListData);
+console.log('list');
+console.log(no_shareLists);
+console.log(shareLists);
 
 
 //创建新的条目
@@ -191,6 +194,16 @@ function pushActor_id(){
       averageDetailData.dispatch({
         type: 'averageDetails/changeState',
         payload:checked,newData
+     });
+  }
+
+  //刷新条目
+  function queryDetails(){
+    Toast.info('刷新中...', 1.3);
+      averageDetailData.dispatch({
+        type: 'averageDetails/queryDetails',
+        payload:{
+        }
      });
   }
 
@@ -436,11 +449,12 @@ function pushActor_id(){
      return (
        <div className={divClass}>
          <Tag >{actorLists[index].nickname}</Tag><br/>
-         <Icon type={require('!svg-sprite!../../../assets/icons/card-down.svg')} size="xxs"  /> 
+         <Icon type={require('!svg-sprite!../../../assets/icons/card-down.svg')} size="xxs"  />
          <WingBlank size='lg'>
          <Card onClick={()=>{
            //打开修改modal
            updateDetail(averageDetailList);
+           queryActor();
            updateActor();
          }}>
             <Card.Header
@@ -505,12 +519,24 @@ function pushActor_id(){
       <div key='2'>{CardList}</div>
       <ModalComponent/>
       <div className={styles.div_btn} key='3'>
+        <Button   inline style={{ margin: '0.08rem' }} disabled={disabledBtn}
+                //  icon={require('!svg-sprite!../../../assets/icons/refresh.svg')}
+                 onClick={ () => {
+                   queryDetails();
+                 }}
+                 >
+                 <div>
+                 <Icon type={require('!svg-sprite!../../../assets/icons/refresh.svg')} size="xxs"/>
+                </div>
+                 </Button>
       <Button  type="primary" inline style={{ margin: '0.08rem' }} disabled={disabledBtn}
                onClick={ () => {
                 addDetail();
                 queryActor();
+                updateActor();
                }}
                >+</Button>
+
       </div>
     </QueueAnim>
     </div>

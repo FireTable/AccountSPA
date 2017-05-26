@@ -63,6 +63,12 @@ export default {
             type: 'averageResults/queryResult',
             payload: newData
           });
+
+          //关闭自动刷新计时器
+          dispatch({
+            type: 'averageLists/closeTimer',
+            payload: {}
+          });
         }
       });
     },

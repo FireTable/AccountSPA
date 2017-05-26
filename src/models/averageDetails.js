@@ -314,6 +314,7 @@ export default {
             type: 'users/hadLogin',
             payload: newData
           });
+
           //获取该averageList的detail
           dispatch({
             type: 'averageDetails/queryDetails',
@@ -322,6 +323,12 @@ export default {
           //获取averageList的actor_id,存放在users的model中
           dispatch({
             type: 'users/queryActor',
+            payload: {}
+          });
+
+          //关闭自动刷新计时器
+          dispatch({
+            type: 'averageLists/closeTimer',
             payload: {}
           });
         }
